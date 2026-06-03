@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import type { PostInfo } from './PostsPage/types';
 import PostHeader from './PostHeader';
 import Avatar from './Avatar';
@@ -32,7 +32,7 @@ const PostDetailPage = () => {
       setEditContent(postData.content);
     } catch (err) {
       console.error(err);
-      setError('Ошибка загрузки поста');
+      setError('Пост не найден');
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,13 @@ const PostDetailPage = () => {
   };
 
   if (loading) return <div>Загрузка...</div>;
-  if (error || !post) return <div>{error || 'Пост не найден'}</div>;
+  if (error || !post)
+    return (
+      <div className="error-message">
+        {error || 'Пост не найден'}
+        <Link to="/posts">Вернуться на главную</Link>
+      </div>
+    );
 
   return (
     <div className="post-detail-page">
